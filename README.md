@@ -1,5 +1,7 @@
 # EventFlow
 
+[![CI/CD](https://github.com/magisterij-1/EventFlow2/actions/workflows/ci-cd.yml/badge.svg?branch=main&event=push)](https://github.com/magisterij-1/EventFlow2/actions/workflows/ci-cd.yml)
+
 ## Opis projekta
 
 EventFlow je spletna aplikacija, namenjena enostavnejši organizaciji dogodkov ter preglednemu upravljanju dogodkov in prijav udeležencev na enem mestu.
@@ -28,6 +30,17 @@ Projektna dokumentacija je na voljo v mapi [docs/](docs/).
 - [Uporabniške zgodbe](docs/05-uporabniske-zgodbe.md)
 - [Wireframes](docs/06-wireframes.md)
 - [Arhitekturne odločitve (ADR)](docs/adr/)
+
+## CI/CD
+
+GitHub Actions zažene cevovod ob pull requestu v `main` in ob pushu na `main`.
+
+- **`lint`** preveri kodo frontenda in backenda z ESLint.
+- **`test`** zažene teste za oba dela aplikacije in objavi poročili o pokritosti.
+- **`build`** po uspešnih testih zgradi frontend, backend in produkcijsko Docker sliko ter objavi artefakte.
+- **`deploy`** po uspešnih preverjanjih ob pushu na `main` prenese že zgrajeno sliko in jo namesti na Render v okolje `production`.
+
+Javni URL aplikacije še ni na voljo. Po uspešni namestitvi ga GitHub prikaže v [okolju `production`](https://github.com/magisterij-1/EventFlow2/deployments/activity_log?environments_filter=production). Nastavitve so opisane v [navodilih za produkcijsko namestitev](docs/08-produkcijska-namestitev.md).
 
 ## Lokalni zagon projekta
 
