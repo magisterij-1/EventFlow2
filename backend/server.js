@@ -20,6 +20,10 @@ const pool = require("./db");
 app.use(cors());
 app.use(express.json());
 
+if (process.env.FRONTEND_DIST_DIR) {
+  app.use(express.static(process.env.FRONTEND_DIST_DIR));
+}
+
 app.get("/", (req, res) => {
   res.json({ message: "EventFlow backend deluje!" });
 });
