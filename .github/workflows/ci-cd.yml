@@ -41,8 +41,48 @@ jobs:
         working-directory: frontend
         run: npm run lint
 
-  build:
+  test:
     needs: lint
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - package: backend
+            coverage-path: backend/lcov.info
+          - package: frontend
+            coverage-path: frontend/coverage/
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: '24'
+          cache: npm
+          cache-dependency-path: |
+            backend/package-lock.json
+            frontend/package-lock.json
+
+      - name: Install dependencies
+        working-directory: ${{ matrix.package }}
+        run: npm ci
+
+      - name: Run tests with coverage
+        working-directory: ${{ matrix.package }}
+        run: npm run test:coverage
+
+      - name: Upload coverage report
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@v7
+        with:
+          name: eventflow-${{ matrix.package }}-coverage
+          path: ${{ matrix.coverage-path }}
+          if-no-files-found: error
+
+  build:
+    needs: test
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
