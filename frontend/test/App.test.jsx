@@ -82,7 +82,7 @@ describe('Account navigation', () => {
     expect(navbar.getByRole('button', { name: 'Moje prijave' })).toBeTruthy()
     expect(navbar.queryByRole('button', { name: 'Ustvari dogodek' })).toBeNull()
     expect(fetchMock).toHaveBeenCalledWith(
-      'http://localhost:3000/api/users/me',
+      expect.stringMatching(/\/users\/me$/),
       expect.objectContaining({
         method: 'POST',
         headers: expect.objectContaining({ Authorization: 'Bearer test-token' }),
@@ -125,7 +125,7 @@ describe('Event discovery', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Išči dogodke' }))
     await screen.findByRole('heading', { name: 'Trenutno ni dogodkov.' })
 
-    const url = new URL(fetchMock.mock.lastCall[0])
+    const url = new URL(fetchMock.mock.lastCall[0], window.location.origin)
     expect(url.pathname).toBe('/api/events')
     expect(Object.fromEntries(url.searchParams)).toEqual({
       search: 'Jazz & blues',
@@ -148,7 +148,7 @@ describe('Event discovery', () => {
     await screen.findByRole('heading', { name: 'Trenutno ni dogodkov.' })
 
     expect([search.value, category.value, date.value]).toEqual(['', '', ''])
-    expect(new URL(fetchMock.mock.lastCall[0]).search).toBe('')
+    expect(new URL(fetchMock.mock.lastCall[0], window.location.origin).search).toBe('')
   })
 
   it('shows an error returned by the events API', async () => {

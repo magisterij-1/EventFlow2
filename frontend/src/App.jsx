@@ -3,6 +3,8 @@ import keycloak from './keycloak'
 import './App.css'
 import React, { useEffect, useState } from 'react'
 
+const API_URL = (import.meta.env.VITE_API_URL || 'http://localhost:3000/api').replace(/\/+$/, '')
+
 function App() {
   const isAuthenticated = keycloak.authenticated
 
@@ -91,7 +93,7 @@ function App() {
       if (roles.includes('ORGANIZER')) return
 
       try {
-        const response = await fetch('http://localhost:3000/api/users/me', {
+        const response = await fetch(`${API_URL}/users/me`, {
           method: 'POST',
           headers: {
             Authorization: `Bearer ${keycloak.token}`,
@@ -155,7 +157,7 @@ function App() {
 
     try {
       const response = await fetch(
-        'http://localhost:3000/api/organizations/register',
+        `${API_URL}/organizations/register`,
         {
           method: 'POST',
           headers: {
@@ -205,7 +207,7 @@ function App() {
     setEventError(false)
 
     try {
-      const response = await fetch('http://localhost:3000/api/events', {
+      const response = await fetch(`${API_URL}/events`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -257,7 +259,7 @@ function App() {
     setEventsError(false)
 
     try {
-      const response = await fetch('http://localhost:3000/api/events/my', {
+      const response = await fetch(`${API_URL}/events/my`, {
         headers: {
           Authorization: `Bearer ${keycloak.token}`
         }
@@ -298,7 +300,7 @@ function App() {
 
     try {
       const response = await fetch(
-        `http://localhost:3000/api/events/${event.id}/registrations`,
+        `${API_URL}/events/${event.id}/registrations`,
         {
           headers: {
             Authorization: `Bearer ${keycloak.token}`
@@ -351,7 +353,7 @@ function App() {
 
     try {
       const response = await fetch(
-        'http://localhost:3000/api/registrations/my',
+        `${API_URL}/registrations/my`,
         {
           headers: {
             Authorization: `Bearer ${keycloak.token}`
@@ -389,7 +391,7 @@ function App() {
 
     try {
       const response = await fetch(
-        `http://localhost:3000/api/events/${registration.event_id}/cancel-registration`,
+        `${API_URL}/events/${registration.event_id}/cancel-registration`,
         {
           method: 'PATCH',
           headers: {
@@ -427,7 +429,7 @@ function App() {
 
     try {
       const response = await fetch(
-        `http://localhost:3000/api/events/${eventId}/publish`,
+        `${API_URL}/events/${eventId}/publish`,
         {
           method: 'PATCH',
           headers: {
@@ -479,7 +481,7 @@ function App() {
 
     try {
       const response = await fetch(
-        `http://localhost:3000/api/events?${params.toString()}`
+        `${API_URL}/events?${params.toString()}`
       )
 
       const data = await response.json()
@@ -546,7 +548,7 @@ function App() {
 
     try {
       const response = await fetch(
-        `http://localhost:3000/api/events/${eventId}/register`,
+        `${API_URL}/events/${eventId}/register`,
         {
           method: 'POST',
           headers: {
