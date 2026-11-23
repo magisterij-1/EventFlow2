@@ -34,6 +34,7 @@ Projektna dokumentacija je na voljo v mapi [docs/](docs/).
 ## CI/CD
 
 GitHub Actions zažene cevovod ob pull requestu v `main` in ob pushu na `main`.
+Združitev v `main` zahteva uspešen `lint`, teste za frontend in backend ter uspešen `build`.
 
 - **`lint`** preveri kodo frontenda in backenda z ESLint.
 - **`test`** zažene teste za oba dela aplikacije in objavi poročili o pokritosti.
