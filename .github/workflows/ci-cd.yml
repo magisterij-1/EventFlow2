@@ -72,3 +72,24 @@ jobs:
       - name: Build frontend
         working-directory: frontend
         run: npm run build
+
+      - name: Prepare backend package
+        working-directory: backend
+        run: |
+          mkdir -p "$RUNNER_TEMP/eventflow-backend/database"
+          cp dist/server.js package.json package-lock.json "$RUNNER_TEMP/eventflow-backend/"
+          cp database/schema.sql "$RUNNER_TEMP/eventflow-backend/database/"
+
+      - name: Upload frontend artifact
+        uses: actions/upload-artifact@v7
+        with:
+          name: eventflow-frontend
+          path: frontend/dist/
+          if-no-files-found: error
+
+      - name: Upload backend artifact
+        uses: actions/upload-artifact@v7
+        with:
+          name: eventflow-backend
+          path: ${{ runner.temp }}/eventflow-backend/
+          if-no-files-found: error
